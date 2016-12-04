@@ -7,9 +7,11 @@ any file from the backup.
 # Building
 
 You'll need VS 2015+, any edition should do. Reedy is written in plain
-C# with a single PCL and WPF project, so it should be as simple as:
+C# with a single class library and WPF project, so it should be as simple as:
 
 1. Clone
+2. Init & update submodules to get Xamarin.MacDev (we need this for
+   PList reading)
 2. Open Reedy.sln
 3. Hit Build
 
