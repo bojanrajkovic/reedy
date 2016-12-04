@@ -1,0 +1,20 @@
+﻿<controls:MetroWindow x:Class="Reedy.BackupPicker"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Reedy"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="Choose a Backup" MinHeight="200" Height="200" Width="370" MinWidth="370">
+    <Grid Margin="10">
+        <ListBox HorizontalAlignment="Left" x:Name="backupList" Grid.Row="1" Grid.Column="1" VerticalAlignment="Top" ItemsSource="{Binding Backups}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <EventSetter Event="MouseDoubleClick" Handler="PickBackup"/>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+    </Grid>
+</controls:MetroWindow>

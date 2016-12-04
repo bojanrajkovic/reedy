@@ -3,12 +3,12 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-
+using System.Windows;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 
 using Microsoft.WindowsAPICodePack.Dialogs;
-
+using Reedy.Core;
 using Reedy.Core.Models;
 
 using SQLite;
@@ -30,42 +30,23 @@ namespace Reedy
 
         protected override void OnContentRendered(EventArgs e)
         {
-            PickBackupAsync();
+            var backups = BackupHelper.EnumerateBackups(isMac: false).ToArray();
+            PickBackup(backups);
         }
 
-        private async void PickBackupAsync()
+        private void PickBackup(Backup[] backups)
         {
-            var dlg = new CommonOpenFileDialog() {
-                Title = "Choose an iDevice Backup",
-                IsFolderPicker = true,
-                AddToMostRecentlyUsedList = false,
-                AllowNonFileSystemItems = false,
-                EnsureFileExists = true,
-                EnsurePathExists = true,
-                EnsureReadOnly = false,
-                EnsureValidNames = true,
-                Multiselect = false,
-                ShowPlacesList = true
-            };
+            var backupPicker = new BackupPicker(this);
 
-            if (dlg.ShowDialog() == CommonFileDialogResult.Ok) {
-                var folder = dlg.FileName;
-                var manifest = Path.Combine(folder, "Manifest.db");
+            foreach (var backup in backups)
+                backupPicker.Backups.Add(backup);
 
-                if (!System.IO.File.Exists(manifest)) {
-                    await this.ShowMessageAsync(
-                        "Not a backup folder",
-                        "The folder you chose does not appear to be a backup folder (missing manifest).",
-                        MessageDialogStyle.Affirmative
-                    );
-                } else {
-                    await PopulateBackupAsync(folder, manifest);
-                }
-            }
+            backupPicker.ShowDialog();
         }
 
-        private async Task PopulateBackupAsync(string folder, string manifest)
+        internal async Task PopulateBackupAsync(Backup backup)
         {
+            var manifest = Path.Combine(backup.BackupPath, "Manifest.db");
             var db = new SQLiteAsyncConnection(manifest);
             var files = await db.QueryAsync<AppleFile>("SELECT * FROM Files");
 
@@ -73,7 +54,7 @@ namespace Reedy
             var misc = new Core.Models.Directory("Miscellaneous Files", null);
 
             files.Where(x => x.RelativePath == "")
-                 .Select(x => new Core.Models.File(x.Domain, Path.Combine(folder, x.FileID.Substring(0, 2), x.FileID)))
+                 .Select(x => new Core.Models.File(x.Domain, Path.Combine(backup.BackupPath, x.FileID.Substring(0, 2), x.FileID)))
                  .ToList()
                  .ForEach(misc.Children.Add);
 
@@ -82,7 +63,7 @@ namespace Reedy
             var filesWithPath = files.Where(x => !string.IsNullOrWhiteSpace(x.RelativePath));
 
             foreach (var file in filesWithPath) {
-                var diskPath = Path.Combine(folder, file.FileID.Substring(0, 2), file.FileID);
+                var diskPath = Path.Combine(backup.BackupPath, file.FileID.Substring(0, 2), file.FileID);
 
                 if (!System.IO.File.Exists(diskPath))
                     continue;
