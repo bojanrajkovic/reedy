@@ -1,0 +1,43 @@
+﻿<controls:MetroWindow x:Class="Reedy.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:commands="clr-namespace:Reedy.Commands"
+        xmlns:models="clr-namespace:Reedy.Core.Models;assembly=Reedy.Core"
+        x:Name="window"
+        mc:Ignorable="d"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        Title="Reedy" MinHeight="400" MinWidth="500" Height="365" Width="472">
+    <Window.Resources>
+        <HierarchicalDataTemplate DataType="{x:Type models:Directory}"
+                                  ItemsSource="{Binding Children}">
+            <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}" />
+        </HierarchicalDataTemplate>
+
+        <DataTemplate DataType="{x:Type models:File}">
+            <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=Path}">
+                <TextBlock.ContextMenu>
+                    <ContextMenu DataContext="{Binding PlacementTarget.DataContext,RelativeSource={RelativeSource Mode=Self}}">
+                        <MenuItem Header="Extract File" Command="commands:Commands.ExtractFileCommand"  CommandParameter="{TemplateBinding DataContext}" />
+                    </ContextMenu>
+                </TextBlock.ContextMenu>
+            </TextBlock>
+        </DataTemplate>
+    </Window.Resources>
+
+    <Grid Margin="8">
+        <TreeView HorizontalAlignment="Left"
+                  Grid.Row="1"
+                  VerticalAlignment="Top"
+                  Grid.Column="1"
+                  x:Name="treeView"
+                  ItemsSource="{Binding BackupTree}"
+                  ScrollViewer.VerticalScrollBarVisibility="Hidden">
+            <TreeView.Resources>
+                
+            </TreeView.Resources>
+        </TreeView>
+    </Grid>
+</controls:MetroWindow>
