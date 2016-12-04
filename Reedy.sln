@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.25920.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reedy", "Reedy\Reedy.csproj", "{01F2E9AA-D7E7-4433-BFE9-65010590D19C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reedy.Windows", "src\Reedy.Windows\Reedy.Windows.csproj", "{01F2E9AA-D7E7-4433-BFE9-65010590D19C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reedy.Core", "Reedy.Core\Reedy.Core.csproj", "{C1A2BD1A-EE56-4B8E-A735-C66D662F95AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reedy.Core", "src\Reedy.Core\Reedy.Core.csproj", "{C1A2BD1A-EE56-4B8E-A735-C66D662F95AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
