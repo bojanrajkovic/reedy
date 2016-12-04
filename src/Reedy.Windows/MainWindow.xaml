@@ -34,10 +34,6 @@
                   Grid.Column="1"
                   x:Name="treeView"
                   ItemsSource="{Binding BackupTree}"
-                  ScrollViewer.VerticalScrollBarVisibility="Hidden">
-            <TreeView.Resources>
-                
-            </TreeView.Resources>
-        </TreeView>
+                  ScrollViewer.VerticalScrollBarVisibility="Hidden" />
     </Grid>
 </controls:MetroWindow>
