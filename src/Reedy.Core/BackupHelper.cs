@@ -34,6 +34,9 @@ namespace Reedy.Core
                 );
             }
 
+            if (!IODirectory.Exists(backupRootPath))
+                yield break;
+
             foreach (var backupDirectory in IODirectory.EnumerateDirectories (backupRootPath)) {
                 // Check if this is a backup we can deal with. It has to have an Info.plist and a Manifest.db.
                 var plistFile = Path.Combine(backupDirectory, "Info.plist");
